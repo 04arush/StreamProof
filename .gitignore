@@ -1,2 +1,5 @@
-# Circuit prover inputs
+# Noir build artifacts
+circuits/target/
+circuits/proofs/
 circuits/Prover.toml
+circuits/Verifier.toml
