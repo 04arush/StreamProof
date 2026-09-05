@@ -3,3 +3,6 @@ circuits/target/
 circuits/proofs/
 circuits/Prover.toml
 circuits/Verifier.toml
+
+# Node modules
+scripts/node_modules/
