@@ -4,5 +4,11 @@ circuits/proofs/
 circuits/Prover.toml
 circuits/Verifier.toml
 
+# Foundry build artifacts
+contracts/cache/
+contracts/broadcast/
+contracts/lib/
+contracts/out/
+
 # Node modules
 scripts/node_modules/
