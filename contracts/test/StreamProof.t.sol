@@ -62,4 +62,20 @@ contract StreamProofTest is Test {
 
         assertEq(usdc.balanceOf(artistWallet), 500_000_000);
     }
+
+    function test_DoubleClaim_Reverts() public {
+        bytes memory proof = vm.readFileBinary("../circuits/target/proof");
+        bytes32 root = bytes32(uint256(7264772886412666791416272095986303450893289674225826523000387371307532192431));
+        registry.postCommitment(ARTIST_ID, TRACK_ID, PERIOD_ID, root);
+
+        bytes32[] memory publicInputs = new bytes32[](2);
+        publicInputs[0] = root;
+        publicInputs[1] = bytes32(TIER_THRESHOLD);
+
+        address artistWallet = address(0xBEEF);
+        vault.claimPayout(proof, publicInputs, ARTIST_ID, TRACK_ID, PERIOD_ID, artistWallet);
+
+        vm.expectRevert(PayoutVault.AlreadyClaimed.selector);
+        vault.claimPayout(proof, publicInputs, ARTIST_ID, TRACK_ID, PERIOD_ID, artistWallet);
+    }
 }
