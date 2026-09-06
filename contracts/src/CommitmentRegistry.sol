@@ -31,7 +31,6 @@ contract CommitmentRegistry {
 
     // ------------------- External Functions ------------------
 
-    ///
     /// @notice Posts a commitment
     /// @dev Reverts if a root already exists for this key
     /// @param artistId - The ID of the artist
@@ -50,7 +49,6 @@ contract CommitmentRegistry {
         emit CommitmentPosted(key, artistId, trackId, periodId, root);
     }
 
-    /**
     /// @notice Returns the root for a given key
     /// @dev Reverts if no root exists for this key
     /// @param artistId - The ID of the artist
@@ -67,7 +65,6 @@ contract CommitmentRegistry {
 
     // -------------------- Public Functions -------------------
 
-    /**
     /// @notice Returns the key for a given artist, track, and period
     /// @dev The key is a keccak256 hash of the artist, track, and period IDs
     /// @param artistId - The ID of the artist
