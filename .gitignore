@@ -6,8 +6,6 @@ circuits/Verifier.toml
 
 # Foundry build artifacts
 contracts/cache/
-contracts/broadcast/
-contracts/lib/
 contracts/out/
 
 # Node modules
