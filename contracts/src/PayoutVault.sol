@@ -8,13 +8,22 @@ interface IERC20 {
     function balanceOf(address account) external view returns (uint256);
 }
 
+/// @title PayoutVault
+/// @author Arush Singh
+/// @notice Manages the payout vault for the StreamProof protocol
 contract PayoutVault {
+
+    // ==================== STATE VARIABLES ====================
+
     TierVerifier public immutable tierVerifier;
     IERC20 public immutable usdc;
     address public admin;
 
     mapping(uint256 => uint256) public payoutForTier;
     mapping(bytes32 => bool) public claimed;
+
+
+    // ======================== EVENTS =========================
 
     event TierPayoutConfigured(uint256 tierThreshold, uint256 amount);
     event PayoutReleased(
@@ -26,6 +35,9 @@ contract PayoutVault {
         uint256 amount
     );
 
+
+    // ======================== ERRORS =========================
+
     error NotAdmin();
     error ProofInvalid();
     error AlreadyClaimed();
@@ -36,12 +48,23 @@ contract PayoutVault {
         _;
     }
 
+
+    // ======================= FUNCTIONS =======================
+
+    // ---------------------- Constructor ----------------------
+
     constructor(address _tierVerifier, address _usdc) {
         tierVerifier = TierVerifier(_tierVerifier);
         usdc = IERC20(_usdc);
         admin = msg.sender;
     }
 
+    // ------------------- External Functions --------------------
+
+    /// @notice Sets the payout amount for a given tier threshold
+    /// @dev Only callable by the admin
+    /// @param tierThreshold - The tier threshold for which to set the payout
+    /// @param amount - The amount to set as the payout for the given tier
     function setPayoutForTier(
         uint256 tierThreshold,
         uint256 amount
@@ -50,20 +73,13 @@ contract PayoutVault {
         emit TierPayoutConfigured(tierThreshold, amount);
     }
 
-    function claimKey(
-        uint256 artistId,
-        uint256 trackId,
-        uint256 periodId,
-        uint256 tierThreshold
-    ) public pure returns (bytes32) {
-        return keccak256(abi.encodePacked(
-            artistId,
-            trackId,
-            periodId,
-            tierThreshold
-        ));
-    }
-
+    /// @notice Claims the payout for a given tier threshold
+    /// @param proof - The proof to verify the tier threshold
+    /// @param publicInputs - The public inputs for the tier threshold proof
+    /// @param artistId - The ID of the artist
+    /// @param trackId - The ID of the track
+    /// @param periodId - The ID of the period
+    /// @param recipient - The recipient of the payout
     function claimPayout(
         bytes calldata proof,
         bytes32[] calldata publicInputs,
@@ -87,5 +103,27 @@ contract PayoutVault {
         require(usdc.transfer(recipient, amount), "USDC transfer failed");
 
         emit PayoutReleased(artistId, trackId, periodId, tierThreshold, recipient, amount);
+    }
+
+    // -------------------- Public Functions ---------------------
+
+    /// @notice Claims the key for a given tier threshold
+    /// @param artistId - The ID of the artist
+    /// @param trackId - The ID of the track
+    /// @param periodId - The ID of the period
+    /// @param tierThreshold - The tier threshold for which to claim the key
+    /// @return key - The claimed key
+    function claimKey(
+        uint256 artistId,
+        uint256 trackId,
+        uint256 periodId,
+        uint256 tierThreshold
+    ) public pure returns (bytes32) {
+        return keccak256(abi.encodePacked(
+            artistId,
+            trackId,
+            periodId,
+            tierThreshold
+        ));
     }
 }

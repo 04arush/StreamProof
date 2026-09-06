@@ -4,6 +4,9 @@ pragma solidity ^0.8.24;
 import "./Verifier.sol";
 import "./CommitmentRegistry.sol";
 
+/// @title TierVerifier
+/// @author Arush Singh
+/// @notice Verifies tier proofs against the commitment registry
 contract TierVerifier {
 
     // ==================== STATE VARIABLES ====================
