@@ -28,16 +28,16 @@ contract TierVerifier {
 
     // ------------------- External Functions ------------------
 
-   /// @notice Verifies a tier proof against the commitment registry
-   /// @dev Reverts if the proof is invalid or the root does not match the expected root
-   /// @param proof - Raw bb-generated proof bytes
-   /// @param publicInputs - bb's public inputs array — order must be [root, tier_threshold]
-   ///                       matching `../circuits/src/main.nr`'s parameter order
-   /// @param artistId - The artist ID
-   /// @param trackId - The track ID
-   /// @param periodId - The period ID
-   /// @return valid - Whether the proof is valid
-   /// @return tierThreshold - The tier threshold
+    /// @notice Verifies a tier proof against the commitment registry
+    /// @dev Reverts if the proof is invalid or the root does not match the expected root
+    /// @param proof - Raw bb-generated proof bytes
+    /// @param publicInputs - bb's public inputs array — order must be [root, tier_threshold]
+    ///                       matching `../circuits/src/main.nr`'s parameter order
+    /// @param artistId - The artist ID
+    /// @param trackId - The track ID
+    /// @param periodId - The period ID
+    /// @return valid - Whether the proof is valid
+    /// @return tierThreshold - The tier threshold
     function verifyTierProof(
         bytes calldata proof,
         bytes32[] calldata publicInputs,
