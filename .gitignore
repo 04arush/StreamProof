@@ -13,3 +13,4 @@ contracts/.env
 
 # Node modules
 scripts/node_modules/
+ens-scripts/node_modules/
