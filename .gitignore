@@ -10,6 +10,7 @@ contracts/out/
 
 # Environment variables
 contracts/.env
+ens-scripts/.env
 
 # Node modules
 scripts/node_modules/
