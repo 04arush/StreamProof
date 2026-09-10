@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createWalletClient, http } from "viem";
+import { createWalletClient, http, toHex } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { arcTestnet } from "@/lib/circuit/arcChain";
 import { commitmentRegistryAbi } from "@/lib/abis";
@@ -11,6 +11,8 @@ export async function POST(req: NextRequest) {
   const wallet = createWalletClient({ account, chain: arcTestnet, transport: http() });
 
   try {
+    const rootHex = toHex(BigInt(root), { size: 32 });
+
     const txHash = await wallet.writeContract({
       address: process.env.NEXT_PUBLIC_COMMITMENT_REGISTRY as `0x${string}`,
       abi: commitmentRegistryAbi,
@@ -19,9 +21,6 @@ export async function POST(req: NextRequest) {
     });
     return NextResponse.json({ txHash });
   } catch (err: any) {
-    return NextResponse.json(
-      { error: err.message },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
