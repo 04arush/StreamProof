@@ -1,7 +1,7 @@
 "use client";
 
 import { PrivyProvider } from "@privy-io/react-auth";
-import { arcTestnet } from "@/lib/arcChain";
+import { arcTestnet } from "@/lib/circuit/arcChain";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
