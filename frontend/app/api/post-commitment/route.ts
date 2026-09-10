@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
       address: process.env.NEXT_PUBLIC_COMMITMENT_REGISTRY as `0x${string}`,
       abi: commitmentRegistryAbi,
       functionName: "postCommitment",
-      args: [BigInt(artistId), BigInt(trackId), BigInt(periodId), root as `0x${string}`]
+      args: [BigInt(artistId), BigInt(trackId), BigInt(periodId), rootHex]
     });
     return NextResponse.json({ txHash });
   } catch (err: any) {
