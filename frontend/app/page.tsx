@@ -3,7 +3,7 @@
 import { usePrivy, useWallets } from "@privy-io/react-auth";
 
 export default function Home() {
-  const { login, authenticated, user } = usePrivy();
+  const { login, logout, authenticated, user } = usePrivy();
   const { wallets } = useWallets();
 
   if (!authenticated) {
@@ -19,6 +19,7 @@ export default function Home() {
           <li key={w.address}>{w.address} ({w.walletClientType})</li>
         ))}
       </ul>
+      <button onClick={logout}>Log out</button>
     </div>
   );
 }
