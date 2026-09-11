@@ -9,8 +9,8 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@aztec/bb.js": "^5.2.0",
-    "@noir-lang/noir_js": "^1.0.0-rc.0",
+    "@aztec/bb.js": "^3.0.0-nightly.20251104",
+    "@noir-lang/noir_js": "^1.0.0-beta.20",
     "@privy-io/react-auth": "^3.40.0",
     "next": "16.3.4",
     "react": "19.2.8",
