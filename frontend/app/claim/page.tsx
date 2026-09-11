@@ -25,5 +25,52 @@ export default function ClaimScreen() {
     tier_threshold: "50000"
   };
 
+  async function handleClaim() {
+    const embeddedWallet = wallets.find((w) => w.walletClientType === "privy");
+    if (!embeddedWallet) {
+      setStatus("No embedded wallet found — log in first.");
+      return;
+    }
 
+    setStatus("Generating proof in-browser...");
+    const data = encodeFunctionData({
+      abi: payoutVaultAbi,
+      functionName: "claimPayout",
+      args: [
+        `0x${Buffer.from(proof).toString("hex")}` as `0x${string}`,
+        publicInputs as `0x${string}`[],
+        BigInt(proveInputs.artist_id),
+        BigInt(proveInputs.track_id),
+        BigInt(proveInputs.period_id),
+        embeddedWallet.address as `0x${string}`
+      ]
+    });
+
+    const receipt = await sendTransaction({
+      to: process.env.NEXT_PUBLIC_PAYOUT_VAULT as `0x${string}`,
+      data,
+    });
+
+    setTxHash(receipt.transactionHash);
+    setStatus("Payout Claimed!");
+  }
+
+  if (!authenticated) {
+    return <button onClick={login}>Log in to claim</button>;
+  }
+
+  return (
+    <div style={{ padding: 24 }}>
+      <h1>Artist — Generate Proof & Claim Payout</h1>
+      <button onClick={handleClaim}>Generate Proof + Claim</button>
+      <p>{status}</p>
+      {txHash && (
+        <p>
+          <a href={`https://testnet.arcscan.app/tx/${txHash}`} target="_blank" rel="noreferrer">
+            View transaction on ArcScan
+          </a>
+        </p>
+      )}
+    </div>
+  );
 }
