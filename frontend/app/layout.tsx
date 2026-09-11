@@ -12,7 +12,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           config={{
             defaultChain: arcTestnet,
             supportedChains: [arcTestnet],
-            embeddedWallets: { createOnLogin: "all-users" }
+            embeddedWallets: {
+              ethereum: {
+                createOnLogin: "all-users"
+              }
+            }
           }}
         >
           {children}
