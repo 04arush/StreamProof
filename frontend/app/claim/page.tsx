@@ -68,7 +68,7 @@ export default function ClaimScreen() {
         data,
       });
 
-      setTxHash(receipt.transactionHash);
+      setTxHash(receipt.hash);
       setStep(2);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
