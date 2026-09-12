@@ -8,6 +8,10 @@ A platform commits streaming data for a track as a Merkle root. An artist proves
 
 Royalty verification and privacy are usually in tension. Publishing exact play counts would let artists audit their own payouts, but it would also expose a platform's competitively sensitive traffic and individual listener data — so nobody does it, and settlement stays manual and trust-based. StreamProof resolves this by giving a verifiable yes/no answer ("crossed tier N") instead of the number itself.
 
+## Live demo
+
+View [Live Demo](https://stream-proof-npgp.vercel.app/) — hosted on Vercel
+
 ## How it works
 
 1. **Commit** — the platform builds a Merkle tree of per-track/period leaf data and posts only the root on-chain.
