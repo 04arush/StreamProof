@@ -14,13 +14,37 @@ export interface ProveInputs {
   tier_threshold: string;
 }
 
+const toHex = (val: string) => `0x${BigInt(val).toString(16)}`;
+
 export async function generateTierProof(inputs: ProveInputs) {
-  const noir = new Noir(circuitJson as any);
-  const backend = new UltraHonkBackend((circuitJson as any).bytecode);
+  try {
+    const noir = new Noir(circuitJson as any);
+    const backend = new UltraHonkBackend((circuitJson as any).bytecode, { threads: 1 });
 
-  const { witness } = await noir.execute(inputs as any);
+    const formattedInputs = {
+      artist_id: toHex(inputs.artist_id),
+      track_id: toHex(inputs.track_id),
+      period_id: toHex(inputs.period_id),
+      salt: toHex(inputs.salt),
+      merkle_path: inputs.merkle_path.map(toHex),
+      path_indices: inputs.path_indices.map(toHex),
+      root: toHex(inputs.root),
+      verified_count: toHex(inputs.verified_count),
+      tier_threshold: toHex(inputs.tier_threshold),
+    };
 
-  const { proof, publicInputs } = await backend.generateProof(witness, { keccak: true });
+    console.log("Executing witness generation...");
+    const { witness } = await noir.execute(formattedInputs);
 
-  return { proof, publicInputs };
+    console.log("Witness generated! Proving with UltraHonk...");
+    const { proof, publicInputs } = await backend.generateProof(witness, { keccak: true });
+
+    return { success: true, proof, publicInputs };
+  } catch (error) {
+    console.error("Failed to generate tier proof:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error"
+    };
+  }
 }

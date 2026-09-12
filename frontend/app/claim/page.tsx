@@ -47,15 +47,19 @@ export default function ClaimScreen() {
 
     try {
       setStep(0);
-      const { proof, publicInputs } = await generateTierProof(proveInputs);
+      const result = await generateTierProof(proveInputs);
+
+      if (!result.success || !result.proof) {
+        throw new Error(result.error || "Proof generation failed");
+      }
 
       setStep(1);
       const data = encodeFunctionData({
         abi: payoutVaultAbi,
         functionName: "claimPayout",
         args: [
-          `0x${Buffer.from(proof).toString("hex")}` as `0x${string}`,
-          publicInputs as `0x${string}`[],
+          `0x${Buffer.from(result.proof).toString("hex")}` as `0x${string}`,
+          result.publicInputs as `0x${string}`[],
           BigInt(proveInputs.artist_id),
           BigInt(proveInputs.track_id),
           BigInt(proveInputs.period_id),
